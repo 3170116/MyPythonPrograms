@@ -20,6 +20,13 @@ def sqrt(number):
         return x**2 - number
     return BolzanoMethod(f,0,number,10**(-5))
 
+def integral(f, a, b):
+    k = (b-a)/10**5
+    result = f(a)
+    for i in range(1,10**5 + 1):
+        result += k*f(a + i*k)
+    return result
+
 def det(a):
     if len(a) == 2:
         return a[0][0]*a[1][1] - a[1][0]*a[0][1]
