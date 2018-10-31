@@ -14,10 +14,13 @@ def sign(number):
     else:
         return 1
 
-
-def sqrt(number):
+def nrt(number, power):
+    if power == 1:
+        return number
+    if power == 0:
+        return 1
     def f(x):
-        return x**2 - number
+        return x**(power) - number
     return BolzanoMethod(f,0,number,10**(-5))
 
 def integral(f, a, b):
