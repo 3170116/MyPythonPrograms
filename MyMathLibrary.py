@@ -21,7 +21,10 @@ def nrt(number, power):
         return 1
     def f(x):
         return x**(power) - number
-    return BolzanoMethod(f,0,number,10**(-5))
+    result = BolzanoMethod(f,0,number,10**(-5))
+    if (int(result) + 1)**(power) == number:
+        return int(result) + 1
+    return result
 
 def integral(f, a, b):
     k = (b-a)/10**5
