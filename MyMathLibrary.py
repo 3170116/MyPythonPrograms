@@ -95,31 +95,47 @@ class Poly:
                 d = math.sqrt(poly[1]**2 - 4*poly[0]*poly[2])
                 x0 = (-poly[1] + d)/(2.0*poly[0])
                 x1 = (-poly[1] - d)/(2.0*poly[0])
-                return x0,x1
+                return [x0,x1]
             else:
-                return None
+                return [None]
         elif len(poly) == 2:#ax+c
-            return -poly[1]/poly[0]
+            return [-poly[1]/poly[0]]
         elif len(poly) == 1:#c
             if poly[0] == 0:
-                return 0
-            return None
+                return [0]
+            return [None]
         else:#ax^3,ax^4...
             roots = []
-            extremes = list(self.roots(poly.d()))
-            if poly.value(extremes[0])*poly[0] < 0:#a*poly(exMax) < 0
-                i = 1
-                while poly.value(extremes[0])*poly.value(extremes[0] + i) > 0:
-                    i += 1
-                roots.append(BolzanoMethod(poly,extremes[0],extremes[0]+i,10**(-5)))
-            if (-1)*poly.value(extremes[len(extremes)-1])*poly[0] < 0:#-a*poly(exMin) < 0
-                i = 1
-                while poly.value(extremes[len(extremes)-1])*poly.value(extremes[0] - i) > 0:
-                    i += 1
-                roots.append(BolzanoMethod(poly,extremes[len(extremes)-1],extremes[0]-i,10**(-5)))
-            for i in range(len(extremes)-1):#ex1*ex2 < 0
-                if poly(extremes[i])*poly(extremes[i+1]) < 0:
-                    roots.append(BolzanoMethod(poly,extremes[i],extremes[i+1],10**(-5)))
+            extremes = self.roots(poly.d())
+            #print(extremes)
+            if extremes != [None]:
+                if len(extremes) > 2:
+                    for i in range(len(extremes)-1):
+                        for j in range(i,len(extremes)):
+                            if extremes[i] < extremes[j]:#from bigger extreme to smaller
+                                tmp = extremes[i]
+                                extremes[i] = extremes[j]
+                                extremes[j] = tmp
+                if sign(poly(extremes[0]))*poly[0] < 0:#a*poly(exMax) < 0
+                    i = 1
+                    while sign(poly(extremes[0]))*sign(poly(extremes[0] + i)) > 0:
+                        i += 1
+                    roots.append(BolzanoMethod(poly,extremes[0],extremes[0]+i,10**(-5)))
+                for i in range(len(extremes)-1):#ex1*ex2 < 0
+                    if sign(poly(extremes[i]))*sign(poly(extremes[i+1])) < 0:
+                        roots.append(BolzanoMethod(poly,extremes[i+1],extremes[i],10**(-5)))
+                if ((-1)**(len(poly)-1))*sign(poly(extremes[len(extremes)-1]))*sign(poly[0]) < 0:#-a*poly(exMin) < 0
+                    i = 1
+                    while sign(poly(extremes[len(extremes)-1]-i))*sign(poly(extremes[len(extremes)-1])) > 0:
+                        i += 1
+                    roots.append(BolzanoMethod(poly,extremes[len(extremes)-1]-i,extremes[len(extremes)-1],10**(-5)))
+                '''for root in range(len(roots)):
+                    if poly(int(roots[root])+1) == 0 and int(roots[root])+1 not in roots:
+                        roots[root] = float(int(roots[root])+1)
+                    if poly(int(roots[root])) == 0 and int(roots[root]) not in roots:
+                        roots[root] = float(int(roots[root]))'''
+            else:
+                roots = [None]
             return roots
                         
     def value(self,x0):
