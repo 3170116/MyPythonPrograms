@@ -1,3 +1,4 @@
+#this function prints all the subsets that can be from the list items
 def subSets(items):
     blocks = [items]
     stack = []
