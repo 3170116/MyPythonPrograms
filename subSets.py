@@ -1,4 +1,3 @@
-#these functions print all the subsets that can be from the list items
 def subSets(items):
     blocks = [items]
     stack = []
@@ -17,6 +16,7 @@ def subSets(items):
                 blocks.append(new_block)
     while len(stack) > 0:
         print(stack.pop())
+
 
 #subSets([1,2,3,4,5,6,7,8,9,10])
 
@@ -40,4 +40,17 @@ def getKey1(item):
 def getKey2(item):
     return item[0]
 
-#sol = sorted(sorted(subSetsR([1,2,3,4,5,6]),key = getKey2),key = getKey1)
+'''sol = sorted(sorted(subSetsR([1,2,3,4,5,6]),key = getKey2),key = getKey1)
+for i in sol:
+    print(i)'''
+
+
+def nested_for(started_list,current_list,index,k):
+    if k == 1:
+        for i in range(index,len(started_list)):
+            print(set(current_list + [started_list[i]]))
+    else:
+        for i in range(index,len(started_list)):
+            nested_for(started_list,current_list + [started_list[i]],i,k-1)
+
+#nested_for([1,2,3,4,5],[],0,5)
